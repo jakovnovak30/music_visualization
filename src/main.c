@@ -9,7 +9,7 @@
 #define WINDOW_HEIGHT 500
 #define AUDIO_BUFFER_SIZE 4096
 #define FPS 60
-#define STEP 100
+#define STEP 25
 
 // fft implementation copied from rosseta code:
 // https://rosettacode.org/wiki/Fast_Fourier_transform#C
@@ -125,13 +125,14 @@ int main(int argc, char **argv) {
     }
 
     float acc = 0;
-    for(int i=0;i < AUDIO_BUFFER_SIZE;i++) {
+    for(int i=0;i < AUDIO_BUFFER_SIZE/2;i++) {
       acc += crealf(audio_data.transformed[i]);
 
       if(i % STEP == 0) {
-        acc /= STEP;
-        int w = STEP * WINDOW_WIDTH / audio_data.index;
-        DrawRectangle(w * i/STEP, WINDOW_HEIGHT - acc*WINDOW_HEIGHT, w, acc * WINDOW_HEIGHT, RED);
+        acc /= max_amplitude;
+        int w = 2*STEP * WINDOW_WIDTH / audio_data.index;
+        DrawRectangle(w * i/STEP, WINDOW_HEIGHT/2 - acc*WINDOW_HEIGHT, w, acc * WINDOW_HEIGHT, RED);
+        DrawRectangle(w * i/STEP, WINDOW_HEIGHT/2, w, acc * WINDOW_HEIGHT, RED);
       }
     }
     EndDrawing();
