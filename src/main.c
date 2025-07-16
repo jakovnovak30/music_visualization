@@ -6,9 +6,9 @@
 
 #define WINDOW_TITLE "Music visualizer"
 #define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 800
+#define WINDOW_HEIGHT 500
 #define AUDIO_BUFFER_SIZE 4096
-#define FPS 10
+#define FPS 60
 #define STEP 100
 
 // fft implementation copied from rosseta code:
@@ -65,14 +65,14 @@ void audio_callback(void *buffer_data, unsigned int frames) {
     assert(frames < AUDIO_BUFFER_SIZE && "Should override whole buffer!");
     unsigned int len_1, len_2;
     len_1 = AUDIO_BUFFER_SIZE - audio_data.index - 1;
-    len_2 = frames - len_2;
+    len_2 = frames - len_1;
 
     memcpy(audio_data.audio + audio_data.index, frame_data, sizeof(float) * len_1);
     audio_data.index += len_1;
     assert(audio_data.index == AUDIO_BUFFER_SIZE-1);
 
     // shift everything by len_2 to the left, so we have len_2 space at the end
-    memmove(audio_data.audio, audio_data.audio + len_2, sizeof(float) * (AUDIO_BUFFER_SIZE - len_2));
+    memmove(audio_data.audio, audio_data.audio + len_2 - 1, sizeof(float) * (AUDIO_BUFFER_SIZE - len_2 - 1));
     memcpy(audio_data.audio + AUDIO_BUFFER_SIZE-len_2, frame_data, sizeof(float) * len_2);
   }
   // |       curr_data     |
@@ -120,13 +120,13 @@ int main(int argc, char **argv) {
 
     float max_amplitude = 0.0f;
     for(int i=0;i < AUDIO_BUFFER_SIZE;i++) {
-      if(cabsf(audio_data.transformed[i]) > max_amplitude)
-        max_amplitude = audio_data.transformed[i];
+      if(crealf(audio_data.transformed[i]) > max_amplitude)
+        max_amplitude = crealf(audio_data.transformed[i]);
     }
 
     float acc = 0;
-    for(int i=100;i < AUDIO_BUFFER_SIZE-96;i++) {
-      acc += cabsf(audio_data.transformed[i]) / max_amplitude;
+    for(int i=0;i < AUDIO_BUFFER_SIZE;i++) {
+      acc += crealf(audio_data.transformed[i]);
 
       if(i % STEP == 0) {
         acc /= STEP;
