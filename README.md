@@ -14,5 +14,4 @@ gives the following result (NOTE: this is likely to change as development contin
 ## Planned features
 - drag&drop music files
 - visualization in terminal
-- writing custom shaders
 - adding UI in order to change shader code in real time
