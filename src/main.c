@@ -18,9 +18,7 @@ void reload_lib(void) {
   handle = dlopen("bin/plug.so", RTLD_NOW);
   assert(handle != NULL);
 
-  printf("Old draw: %p\n", draw);
   draw = (__typeof__(draw)) dlsym(handle, "draw");
-  printf("New draw: %p\n", draw);
 
   assert(draw != NULL);
   return;
@@ -52,6 +50,9 @@ int main(int argc, char **argv) {
 
     if(IsKeyDown(KEY_R)) {
       reload_lib();
+    }
+    else if(IsKeyDown(KEY_Q)) {
+      break;
     }
 
     if(draw != NULL) {

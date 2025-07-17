@@ -57,7 +57,7 @@ void audio_callback(void *buffer_data, unsigned int frames) {
     assert(audio_data.index == AUDIO_BUFFER_SIZE-1);
 
     // shift everything by len_2 to the left, so we have len_2 space at the end
-    memmove(audio_data.audio, audio_data.audio + len_2 - 1, sizeof(float) * (AUDIO_BUFFER_SIZE - len_2 - 1));
+    memmove(audio_data.audio, audio_data.audio + len_2, sizeof(float) * (AUDIO_BUFFER_SIZE - len_2));
     memcpy(audio_data.audio + AUDIO_BUFFER_SIZE-len_2, frame_data, sizeof(float) * len_2);
   }
   // |       curr_data     |
