@@ -1,0 +1,34 @@
+[
+  {
+    "arguments": [
+      "/sbin/gcc",
+      "-c",
+      "-g",
+      "-Wall",
+      "-pedantic",
+      "-Iinclude",
+      "-o",
+      "bin/visualizer",
+      "src/main.c"
+    ],
+    "directory": "/home/jakov/Documents/music_visualization",
+    "file": "/home/jakov/Documents/music_visualization/src/main.c",
+    "output": "/home/jakov/Documents/music_visualization/bin/visualizer"
+  },
+  {
+    "arguments": [
+      "/sbin/gcc",
+      "-c",
+      "-g",
+      "-Wall",
+      "-pedantic",
+      "-Iinclude",
+      "-o",
+      "bin/visualizer",
+      "src/process_audio.c"
+    ],
+    "directory": "/home/jakov/Documents/music_visualization",
+    "file": "/home/jakov/Documents/music_visualization/src/process_audio.c",
+    "output": "/home/jakov/Documents/music_visualization/bin/visualizer"
+  }
+]
