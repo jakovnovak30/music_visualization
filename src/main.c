@@ -30,20 +30,24 @@ int main(int argc, char **argv) {
     return -1;
   }
 
-  InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
+  /* init Raylib */
+  char *music_file = argv[1];
+  char title[64];
+  snprintf(title, 64, WINDOW_TITLE " - [%s]", music_file);
+  InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, title);
   InitAudioDevice();
   SetAudioStreamBufferSizeDefault(AUDIO_BUFFER_SIZE);
+  SetTargetFPS(FPS);
 
-  char *music_file = argv[1];
-  printf("Playing file \"%s\" ...\n", music_file);
-
+  /* load music */
   Music music = LoadMusicStream(music_file);
   PlayMusicStream(music);
   AttachAudioStreamProcessor(music.stream, audio_callback);
 
+  /* load draw function */
   reload_lib();
 
-  SetTargetFPS(FPS);
+  /* main loop */
   while (!WindowShouldClose()) {
     PollInputEvents();
     UpdateMusicStream(music);
@@ -65,8 +69,10 @@ int main(int argc, char **argv) {
     }
   }
 
+  /* cleanup stuff */
   StopMusicStream(music);
   UnloadMusicStream(music);
   CloseWindow();
+
   return 0;
 }
