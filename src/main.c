@@ -11,13 +11,19 @@ __typeof__(audio_data) audio_data;
 static void (*draw)(__typeof__(audio_data) *);
 
 void reload_lib(void) {
-  void *handle = dlopen("./bin/plug.so", RTLD_LAZY);
+  static void *handle = NULL;
+
+  if(handle != NULL) dlclose(handle);
+
+  handle = dlopen("bin/plug.so", RTLD_NOW);
   assert(handle != NULL);
 
+  printf("Old draw: %p\n", draw);
   draw = (__typeof__(draw)) dlsym(handle, "draw");
+  printf("New draw: %p\n", draw);
 
   assert(draw != NULL);
-  //dlclose(handle);
+  return;
 }
 
 int main(int argc, char **argv) {
@@ -44,7 +50,10 @@ int main(int argc, char **argv) {
     PollInputEvents();
     UpdateMusicStream(music);
 
-    if(IsKeyDown(KEY_R)) reload_lib();
+    if(IsKeyDown(KEY_R)) {
+      reload_lib();
+    }
+
     if(draw != NULL) {
       for(int i=0;i < AUDIO_BUFFER_SIZE;++i) {
         audio_data.transformed[i] = audio_data.audio[i];
