@@ -35,6 +35,7 @@ int main(int argc, char **argv) {
   char title[64];
   snprintf(title, 64, WINDOW_TITLE " - [%s]", music_file);
   InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, title);
+  SetWindowState(FLAG_WINDOW_TOPMOST);
   InitAudioDevice();
   SetAudioStreamBufferSizeDefault(AUDIO_BUFFER_SIZE);
   SetTargetFPS(FPS);
